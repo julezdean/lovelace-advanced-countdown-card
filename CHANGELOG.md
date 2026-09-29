@@ -6,7 +6,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-First version.
+## [0.1.0] - 2026-09-29
+
+First release.
 
 ### Added
 
@@ -43,4 +45,5 @@ First version.
   timestamps, non-numeric values and template errors, shown in the card with
   the offending value.
 
-[Unreleased]: https://github.com/julezdean/lovelace-advanced-countdown-card/commits/main
+[Unreleased]: https://github.com/julezdean/lovelace-advanced-countdown-card/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/julezdean/lovelace-advanced-countdown-card/releases/tag/v0.1.0
