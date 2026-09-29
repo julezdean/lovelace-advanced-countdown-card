@@ -1,0 +1,6 @@
+{
+  "name": "Advanced Countdown Card",
+  "filename": "advanced-countdown-card.js",
+  "render_readme": true,
+  "homeassistant": "2024.4.0"
+}

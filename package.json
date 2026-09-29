@@ -1,0 +1,39 @@
+{
+  "name": "advanced-countdown-card",
+  "version": "0.1.0",
+  "description": "Countdown and progress card for Home Assistant: timers, timestamps and percentages as ring, arc, bar, segments or digits",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julezdean/lovelace-advanced-countdown-card.git"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "watch": "vite build --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src test --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
+    "screenshots": "./scripts/screenshots.sh"
+  },
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@mdi/js": "^7.4.47",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^8.57.1",
+    "happy-dom": "^20.0.0",
+    "home-assistant-js-websocket": "^9.4.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vitest": "^3.0.0",
+    "yaml": "^2.6.0"
+  }
+}

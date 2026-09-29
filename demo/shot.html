@@ -1,0 +1,71 @@
+<!doctype html>
+<!--
+  Stage for repository screenshots.
+
+  Renders the cards of one scene at exactly the requested card width on a
+  frozen clock, so a viewport screenshot IS the image -- no cropping, and the
+  same numbers on every run.
+
+  Query parameters:
+    scene  which scene (see SCENES below)             (default hero)
+    w      width of one card in px                    (default 260)
+    dark   1 for dark mode                            (default 0)
+    cols   cards per row                              (default: all in one row)
+  See docs/screenshots.md for the sizes used in the README.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>shot</title>
+    <style id="theme"></style>
+    <style>
+      html, body { margin: 0; }
+      body {
+        background: var(--page);
+        font-family: Roboto, -apple-system, "Segoe UI", sans-serif;
+        padding: 24px;
+        box-sizing: border-box;
+        width: max-content;
+      }
+      #stage { display: grid; gap: 12px; align-items: start; }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <script type="module">
+      import { makeHass, defineHaStandIns, THEME_CSS } from "./mock-hass.js";
+      import { SCENES } from "./scenes.js";
+
+      // A fixed instant: 2026-09-29 18:25:43 UTC. Everything relative in the
+      // mock is built from it, so every run draws the same numbers.
+      const NOW = Date.UTC(2026, 8, 29, 18, 25, 43, 500);
+      Date.now = () => NOW;
+
+      document.getElementById("theme").textContent = THEME_CSS;
+      defineHaStandIns();
+      await import("../dist/advanced-countdown-card.js");
+
+      const params = new URLSearchParams(location.search);
+      const scene = SCENES[params.get("scene") ?? "hero"];
+      const width = Number(params.get("w") ?? 260);
+      const dark = params.get("dark") === "1";
+      const cols = Number(params.get("cols") ?? scene.cards.length);
+      document.body.classList.toggle("dark", dark);
+
+      const stage = document.getElementById("stage");
+      stage.style.gridTemplateColumns = `repeat(${cols}, ${width}px)`;
+      const hass = makeHass(NOW, { dark });
+
+      for (const config of scene.cards) {
+        const card = document.createElement("advanced-countdown-card");
+        card.setConfig({ type: "custom:advanced-countdown-card", ...config });
+        card.hass = hass;
+        if (config.gridColumn) card.style.gridColumn = config.gridColumn;
+        stage.append(card);
+      }
+
+      // Signal for the screenshot tooling: first paint done, template answered.
+      setTimeout(() => requestAnimationFrame(() => document.body.setAttribute("data-ready", "1")), 300);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+# Several cards side by side in a sections view: each is half a section wide
+# by default (getGridOptions: 6 columns).
+type: grid
+columns: 2
+square: false
+cards:
+  - type: custom:advanced-countdown-card
+    entity: timer.pizza
+    display: digital
+    animation:
+      digits: flip
+  - type: custom:advanced-countdown-card
+    entity: sensor.washing_machine_progress
+    display:
+      type: segments
+      segments: 10
+  - type: custom:advanced-countdown-card
+    entity: sensor.oven_ready
+    layout: horizontal
+    display: bar
+    progress:
+      window: 20m
+  - type: custom:advanced-countdown-card
+    entity: input_datetime.alarm
+    display: numeric
+    format: short

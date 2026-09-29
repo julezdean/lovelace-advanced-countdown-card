@@ -1,0 +1,17 @@
+# The end time is computed by Home Assistant from two entities. The template
+# is rendered on the server and pushed to the card whenever one of them
+# changes. `entity` inside the template is the card's own entity.
+type: custom:advanced-countdown-card
+entity: sensor.dishwasher_program
+source:
+  type: template
+  template: >
+    {{ {
+      'start': states('sensor.dishwasher_started'),
+      'end': (states('sensor.dishwasher_started') | as_datetime
+              + timedelta(minutes=states(entity) | int(0))).isoformat(),
+      'name': 'Dishwasher'
+    } }}
+display:
+  type: radial
+icon: mdi:dishwasher

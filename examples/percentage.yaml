@@ -1,0 +1,17 @@
+# A battery as a donut that turns amber and red as it drains.
+type: custom:advanced-countdown-card
+entity: sensor.battery
+source:
+  type: percentage
+display:
+  type: circle
+  style: donut
+colors:
+  mode: thresholds
+  thresholds:
+    - value: 60
+      color: green
+    - value: 25
+      color: amber
+    - value: 0
+      color: red

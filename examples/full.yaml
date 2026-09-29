@@ -1,0 +1,94 @@
+# Nearly every option at once. Nobody needs all of this -- it is here so
+# each key can be looked up in context.
+type: custom:advanced-countdown-card
+entity: timer.coffee
+
+source:
+  type: timer
+
+progress:
+  direction: remaining
+
+display:
+  type: circle
+  style: donut
+  inner: value
+  thickness: 14
+  rounded: true
+  track: true
+  gradient: true
+  size: large
+
+format:
+  style: auto
+  show_seconds: auto
+  decimals: 0
+
+colors:
+  primary: "#03A9F4"
+  secondary: "#1E88E5"
+  track: "rgba(127, 127, 127, 0.15)"
+  mode: thresholds
+  basis: remaining_seconds
+  thresholds:
+    - value: 120
+      color: "#4CAF50"
+    - value: 30
+      color: "#FFC107"
+    - value: 0
+      color: "#F44336"
+
+animation:
+  enabled: true
+  progress: smooth
+  effect: pulse
+  effect_when: finishing
+  finishing_seconds: 30
+  digits: none
+  speed: normal
+
+on_complete:
+  action: show_text
+  text: Fertig
+  color: green
+  effect: glow
+
+status:
+  show: true
+  labels:
+    active: Läuft
+    paused: Pausiert
+    idle: Bereit
+    finished: Fertig
+
+icon:
+  icon: mdi:coffee
+  position: left
+  size: 1
+  color: auto
+
+text:
+  title: Kaffee
+  subtitle: "fertig um {end_time}"
+  value: auto
+  percentage: false
+
+layout:
+  orientation: vertical
+  density: normal
+  align: center
+
+appearance:
+  glass: false
+
+tap_action:
+  action: more-info
+hold_action:
+  action: perform-action
+  perform_action: timer.cancel
+  target:
+    entity_id: timer.coffee
+  confirmation:
+    text: Cancel the coffee timer?
+double_tap_action:
+  action: none

@@ -1,0 +1,12 @@
+# A sensor whose attribute holds the end time. A timestamp says when
+# something ends, not when it started -- progress.window gives the bar the
+# other end (here: it fills over the last 24 hours).
+type: custom:advanced-countdown-card
+entity: sensor.next_event
+source:
+  type: timestamp
+  attribute: timestamp
+display:
+  type: bar
+progress:
+  window: 24h

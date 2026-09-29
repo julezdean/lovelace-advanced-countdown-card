@@ -1,0 +1,17 @@
+# A Home Assistant timer as a ring. Paused and idle are shown as such; the
+# countdown runs in the browser from finishes_at, no polling.
+type: custom:advanced-countdown-card
+entity: timer.coffee
+source:
+  type: timer
+display:
+  type: circle
+format:
+  style: HH:MM:SS
+tap_action:
+  action: perform-action
+  perform_action: timer.pause
+  target:
+    entity_id: timer.coffee
+hold_action:
+  action: more-info

@@ -1,0 +1,84 @@
+<!doctype html>
+<!--
+  Demo gallery: every scene from scenes.js on a live clock, light and dark.
+
+    npm run build && python3 -m http.server 4173
+    open http://localhost:4173/demo/
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Advanced Countdown Card — demo</title>
+    <style id="theme"></style>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px 16px 64px;
+        background: var(--page);
+        color: var(--primary-text-color);
+        font-family: Roboto, -apple-system, "Segoe UI", sans-serif;
+      }
+      header { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+      h1 { font-size: 1.25rem; margin: 0; }
+      h2 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+           color: var(--secondary-text-color); margin: 28px 0 10px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; align-items: start; }
+      .grid.wide { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+      label { font-size: 0.875rem; }
+      #log { font: 12px ui-monospace, monospace; color: var(--secondary-text-color); margin-top: 24px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Advanced Countdown Card</h1>
+      <label><input type="checkbox" id="dark" /> dark</label>
+      <label><input type="checkbox" id="de" /> deutsch</label>
+    </header>
+    <main id="main"></main>
+    <div id="log"></div>
+    <script type="module">
+      import { makeHass, defineHaStandIns, THEME_CSS } from "./mock-hass.js";
+      import { SCENES } from "./scenes.js";
+
+      document.getElementById("theme").textContent = THEME_CSS;
+      defineHaStandIns();
+      await import("../dist/advanced-countdown-card.js");
+
+      const START = Date.now();
+      const main = document.getElementById("main");
+      const cards = [];
+
+      for (const [key, scene] of Object.entries(SCENES)) {
+        const h2 = document.createElement("h2");
+        h2.textContent = scene.title;
+        const grid = document.createElement("div");
+        grid.className = key === "layouts" ? "grid wide" : "grid";
+        for (const config of scene.cards) {
+          const card = document.createElement("advanced-countdown-card");
+          card.setConfig({ type: "custom:advanced-countdown-card", ...config });
+          cards.push(card);
+          grid.append(card);
+        }
+        main.append(h2, grid);
+      }
+
+      const apply = () => {
+        const dark = document.getElementById("dark").checked;
+        const language = document.getElementById("de").checked ? "de" : "en";
+        document.body.classList.toggle("dark", dark);
+        const hass = makeHass(START, { dark, language });
+        for (const card of cards) card.hass = hass;
+      };
+      document.getElementById("dark").onchange = apply;
+      document.getElementById("de").onchange = apply;
+      apply();
+
+      // Actions reach Home Assistant as a hass-action event; here they are logged.
+      document.addEventListener("hass-action", (e) => {
+        document.getElementById("log").textContent =
+          `hass-action: ${e.detail.action} -> ${JSON.stringify(e.detail.config[e.detail.action + "_action"])}`;
+      });
+    </script>
+  </body>
+</html>
